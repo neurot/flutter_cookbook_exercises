@@ -1,4 +1,4 @@
-void varFinalConst() {
+void varFinalConstPlayground() {
   variablePlayground();
   stringPlayground();
 }

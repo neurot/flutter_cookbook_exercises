@@ -1,4 +1,4 @@
-void functions() {
+void functionsPlayground() {
   classicalFunctions();
   optionalParameters();
   consumeClosure();
