@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:widget_tree/star.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -53,6 +54,9 @@ Widget _buildProfileDetails(BuildContext context) {
             fontSize: 35,
             fontWeight: FontWeight.w600,
           ),
+        ),
+        const StarRating(
+          value: 4,
         ),
         _buildDetailRow('Age', '4'),
         _buildDetailRow('Status', 'Good Boy'),
