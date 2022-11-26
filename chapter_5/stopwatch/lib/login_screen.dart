@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch/stopwatch.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  static const route = '/login';
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool loggedIn = false;
-  String name = '';
-
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -21,17 +21,9 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: Center(child: loggedIn ? _buildSuccess() : _buildLoginForm()),
-    );
-  }
-
-  Widget _buildSuccess() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const Icon(Icons.check, color: Colors.orangeAccent),
-        Text('Hi $name'),
-      ],
+      body: Center(
+        child: _buildLoginForm(),
+      ),
     );
   }
 
@@ -59,10 +51,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
 
                     // ignore: unnecessary_string_escapes
-                    final regex = RegExp('[^@]+@[^\.]+\..+');
-                    if (!regex.hasMatch(text)) {
-                      return 'Enter a valid email';
-                    }
+                    // final regex = RegExp('[^@]+@[^\.]+\..+');
+                    // if (!regex.hasMatch(text)) {
+                    //   return 'Enter a valid email';
+                    // }
 
                     return null;
                   },
@@ -81,10 +73,10 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!form!.validate()) {
       return;
     }
+    final name = _nameController.text;
+    // final email = _emailController.text;
 
-    setState(() {
-      loggedIn = true;
-      name = _nameController.text;
-    });
+    Navigator.of(context)
+        .pushReplacementNamed(StopWatch.route, arguments: name);
   }
 }
