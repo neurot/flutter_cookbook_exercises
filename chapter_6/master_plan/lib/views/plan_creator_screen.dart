@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:master_plan/models/data_layer.dart';
 import 'package:master_plan/plan_provider.dart';
 import 'package:master_plan/views/plan_screen.dart';
 
@@ -7,10 +6,10 @@ class PlanCreatorScreen extends StatefulWidget {
   const PlanCreatorScreen({super.key});
 
   @override
-  State<PlanCreatorScreen> createState() => _PlanCreatorScreenState();
+  PlanCreatorScreenState createState() => PlanCreatorScreenState();
 }
 
-class _PlanCreatorScreenState extends State<PlanCreatorScreen> {
+class PlanCreatorScreenState extends State<PlanCreatorScreen> {
   final textController = TextEditingController();
 
   @override
@@ -44,6 +43,17 @@ class _PlanCreatorScreenState extends State<PlanCreatorScreen> {
         ));
   }
 
+  void addPlan() {
+    final text = textController.text;
+    // All the business logic has been removed from this 'view' method!
+    final controller = PlanProvider.of(context);
+    controller.addNewPlan(text);
+
+    textController.clear();
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() {});
+  }
+
   Widget _buildMasterPlans() {
     final plans = PlanProvider.of(context).plans;
 
@@ -75,21 +85,11 @@ class _PlanCreatorScreenState extends State<PlanCreatorScreen> {
                 subtitle: Text(plan.completenessMessage),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => PlanScreen(plan: plan)));
+                      builder: (_) => PlanScreen(
+                            plan: plan,
+                          )));
                 }),
           );
         });
-  }
-
-  void addPlan() {
-    final text = textController.text;
-
-    // All the business logic has been removed from this 'view' method!
-    final controller = PlanProvider.of(context);
-    controller.addNewPlan(text);
-
-    textController.clear();
-    FocusScope.of(context).requestFocus(FocusNode());
-    setState(() {});
   }
 }

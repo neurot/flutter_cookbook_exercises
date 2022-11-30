@@ -4,18 +4,14 @@ import 'package:master_plan/plan_provider.dart';
 
 class PlanScreen extends StatefulWidget {
   final Plan plan;
-
-  const PlanScreen({super.key, required this.plan});
-
+  const PlanScreen({Key? key, required this.plan}) : super(key: key);
   @override
-  State<PlanScreen> createState() => _PlanScreenState();
+  State createState() => _PlanScreenState();
 }
 
 class _PlanScreenState extends State<PlanScreen> {
   late ScrollController scrollController;
-
   Plan get plan => widget.plan;
-
   @override
   void initState() {
     super.initState();
@@ -27,20 +23,14 @@ class _PlanScreenState extends State<PlanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final plan = PlanProvider.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Master Plan')),
-      body: Column(
-        children: [
-          Expanded(
-            child: _buildList(),
-          ),
-          SafeArea(
-            child: Text(plan.completenessMessage),
-          )
-        ],
-      ),
-      floatingActionButton: _buildAddTaskButton(),
-    );
+        appBar: AppBar(title: const Text('Master Plan')),
+        body: Column(children: <Widget>[
+          Expanded(child: _buildList()),
+          SafeArea(child: Text(plan.completenessMessage))
+        ]),
+        floatingActionButton: _buildAddTaskButton());
   }
 
   @override
@@ -50,6 +40,7 @@ class _PlanScreenState extends State<PlanScreen> {
   }
 
   Widget _buildAddTaskButton() {
+    //final plan = PlanProvider.of(context);
     return FloatingActionButton(
       child: const Icon(Icons.add),
       onPressed: () {
@@ -61,12 +52,11 @@ class _PlanScreenState extends State<PlanScreen> {
   }
 
   Widget _buildList() {
+    //final plan = PlanProvider.of(context);
     return ListView.builder(
       controller: scrollController,
       itemCount: plan.tasks.length,
-      itemBuilder: (context, index) {
-        return _buildTaskTile(plan.tasks[index]);
-      },
+      itemBuilder: (context, index) => _buildTaskTile(plan.tasks[index]),
     );
   }
 
@@ -84,16 +74,20 @@ class _PlanScreenState extends State<PlanScreen> {
         leading: Checkbox(
             value: task.complete,
             onChanged: (selected) {
+              final controller = PlanProvider.of(context);
               setState(() {
-                task.complete = selected!;
+                task.complete = selected ?? false;
               });
+              controller.savePlan(plan);
             }),
         title: TextFormField(
           initialValue: task.description,
-          onChanged: (text) {
+          onFieldSubmitted: (text) {
+            final controller = PlanProvider.of(context);
             setState(() {
               task.description = text;
             });
+            controller.savePlan(plan);
           },
         ),
       ),
